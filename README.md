@@ -29,5 +29,5 @@ The resulting `ac` shows the value of correlation of the signal with itself at d
 - Using an exponential fit of the normalized AC function (`autocorrelation_time_fit()`)
 - Using an estimator based on AC series summation (`autocorrelation_time_sum()`) adapted from (https://emcee.readthedocs.io/en/stable/tutorials/autocorr/#autocorr)
 
-
-
+## Reading
+https://chem.libretexts.org/Bookshelves/Biological_Chemistry/Concepts_in_Biophysical_Chemistry_(Tokmakoff)/06%3A_Dynamics_and_Kinetics/22%3A_Biophysical_Reaction_Dynamics/22.05%3A_Time-Correlation_Functions
