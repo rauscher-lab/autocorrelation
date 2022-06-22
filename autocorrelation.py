@@ -2,6 +2,7 @@
 
 import numpy as np
 from scipy.signal import correlate
+from scipy.optimize import curve_fit
 
 
 def one_hot_encode(num, max_num):
@@ -61,3 +62,35 @@ def index_autocorrelate(mol_ts):
         oh_ts = np.take(oh_array, indexes, axis=0) 
     ac = vector_autocorrelate_signal(oh_ts)
     return ac
+
+def auto_window(taus, c):
+    """
+    This function estimates where to stop in summation of the estimator of AC time (Adapted from https://emcee.readthedocs.io/en/stable/tutorials/autocorr/#autocorr)
+    """
+    m = np.arange(len(taus)) < c * taus
+    if np.all(m):
+        return -1
+    else:
+        return np.argmin(m)
+
+def exp_f(t, tau):
+    """The function to fit normalized AC with"""
+    return np.exp(-t / tau)
+
+def autocorrelation_time_sum(ac_norm, c=5):
+    """
+    Estimate autocorrelation time given AC function using a summation estimator as in (https://emcee.readthedocs.io/en/stable/tutorials/autocorr/#autocorr)
+    """
+    taus = np.cumsum(ac_norm)
+    windows = auto_window(taus, c)
+    tau_est = taus[windows]
+    return tau_est
+
+def autocorrelation_time_fit(ac_norm):
+    """
+    Estimate AC time via fitting normalized AC to the exponential
+    """
+    popt, pcov = curve_fit(exp_f, np.arange(len(ac_norm)), ac_norm)
+    tau_est = popt[0]
+    return tau_est
+    
