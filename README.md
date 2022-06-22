@@ -25,4 +25,9 @@ print(ac) # [3/4, 1/3, 0, 0]
 ```
 The resulting `ac` shows the value of correlation of the signal with itself at different lagtime from `0` to `t`, if there are `t` time points in the array. For 3-dimensional vectors, `ac[0]==1` since the dot product of the normalized vector with itself equals to 1. However, for the case of indeces, `ac[0]` shows the occupancy (or, probability to find *any* index in the volume). 
 
+## Added new features - estimating autocorrelation times
+- Using an exponential fit of the normalized AC function (`autocorrelation_time_fit()`)
+- Using an estimator based on AC series summation (`autocorrelation_time_sum()`) adapted from (https://emcee.readthedocs.io/en/stable/tutorials/autocorr/#autocorr)
+
+
 
