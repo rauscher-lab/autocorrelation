@@ -22,7 +22,14 @@ def vector_autocorrelate(ts_array, dtype=float):
 def vector_autocorrelate_signal(ts_array, dtype=float):
     n_time = ts_array.shape[0]
     n_dim = ts_array.shape[1]
-    acorr = np.array([correlate(ts_array[:,i].astype(dtype), ts_array[:,i].astype(dtype),'full') for i in range(n_dim)])# correlate each component independently
+    try:
+        acorr = np.empty((n_dim, n_time*2 - 1), dtype=float)
+        for i in range(n_dim):
+            acorr[i] = correlate(ts_array[:,i].astype(dtype), ts_array[:,i].astype(dtype),'full', 'fft') # correlate each component independently
+    except:
+        print('Not enough memory!', ts_array.shape)
+        exit(9)
+        
     acorr = acorr[:, n_time-1:]
     acorr = np.sum(acorr, axis = 0) # sum the correlations for each component
     acorr = acorr * 1./(n_time - np.arange(n_time)) # divide by the number of values actually measured and return
