@@ -23,7 +23,7 @@ def vector_autocorrelate_signal(ts_array, dtype=float):
     n_time = ts_array.shape[0]
     n_dim = ts_array.shape[1]
     acorr = np.array([correlate(ts_array[:,i].astype(dtype), ts_array[:,i].astype(dtype),'full') for i in range(n_dim)])# correlate each component independently
-    acorr = acorr[:, n_time-1:].astype(float)
+    acorr = acorr[:, n_time-1:]
     acorr = np.sum(acorr, axis = 0) # sum the correlations for each component
     acorr = acorr * 1./(n_time - np.arange(n_time)) # divide by the number of values actually measured and return
     return acorr
@@ -58,8 +58,9 @@ def index_autocorrelate(mol_ts):
         oh_array = np.zeros((unique_indexes.shape[0], max((np.max(indexes), 1))), dtype=np.bool)
         for un_index in unique_indexes:
             oh_array[un_index] = one_hot_encode(un_index, max((np.max(indexes), 1)))
-        oh_ts = np.take(oh_array, indexes, axis=0) 
-    ac = vector_autocorrelate_signal(oh_ts, dtype=np.int8)
+        oh_ts = np.take(oh_array, indexes, axis=0)
+        
+    ac = vector_autocorrelate_signal(oh_ts, dtype=float)
     return ac
 
 def auto_window(taus, c):
