@@ -60,7 +60,6 @@ def index_autocorrelate(mol_ts):
             oh_array[un_index] = one_hot_encode(un_index, max((np.max(indexes), 1)))
         oh_ts = np.take(oh_array, indexes, axis=0) 
     ac = vector_autocorrelate_signal(oh_ts, dtype=np.int8)
-    print(ac)
     return ac
 
 def auto_window(taus, c):
